@@ -27,6 +27,7 @@
         on_3b: number of players on third base (0 or 1)
         type: result of pitch (see appendix)
         pitch_type: type of pitch (see appendix)
+        pitch_class: fastball=0.0, off-speed=1.0 (see appendix)
 
 ### Appendix
 
