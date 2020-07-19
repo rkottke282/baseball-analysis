@@ -1,36 +1,58 @@
 import pandas as pd
 helpful_columns = ['inning','outs','p_score','b_score','stand', \
                         'top', 'b_count', 's_count', 'pitch_num', \
-                        'on_1b', 'on_2b', 'on_3b', 'type', 'pitch_type']
+                        'on_1b', 'on_2b', 'on_3b', 'type', 'pitch_type', \
+                        'pitch_class']
+fastballs = ['FA', 'FC', 'FF', 'FS', 'FT', 'SI']
+offspeeds = ['CH', 'CU', 'EP', 'KC', 'KN', 'SC', 'SL']
+nonhittables = ['AB', 'FO', 'PO', 'UN', 'IN']
 
 # pass in no parameters to get all atbats.
 # pass in a pitchers id to get just the rows corresponding to those at bats
 def load_atbats(pitcher_id = ''):
-    atbats_15to18 = pd.read_csv('./data/atbats.csv')
+    atbats_15to18 = pd.read_csv('./raw_data/atbats.csv')
     atbats_15to18 = atbats_15to18.reindex(sorted(atbats_15to18), axis=1)
-    atbats_19 = pd.read_csv('./data/2019_atbats.csv')
+    atbats_19 = pd.read_csv('./raw_data/2019_atbats.csv')
     atbats_19 = atbats_19.reindex(sorted(atbats_19), axis=1)
     atbats = pd.concat((atbats_15to18,atbats_19)) # 925634, 11
     if (pitcher_id != ''):
         atbats = atbats.loc[(atbats['pitcher_id'] == pitcher_id)]
+    atbats['stand'] = atbats['stand'].replace('L', 1.0)
+    atbats['stand'] = atbats['stand'].replace('R', 0.0)
     return atbats
+
+# return pitch_class given pitch_type abbreviation code
+def pitch_class(pitch_type):
+    if (pitch_type in fastballs):
+        return 0.0
+    elif (pitch_type in offspeeds):
+        return 1.0
+    else:
+        return -1.0
 
 # pass in no parameters to get all pitches.
 # pass in a list of at bat ids to get just the rows corresponding to those at bats
 def load_pitches(atbat_ids = ''):
-    pitches_15to18 = pd.read_csv('./data/pitches.csv')
+    pitches_15to18 = pd.read_csv('./raw_data/pitches.csv')
     pitches_15to18 = pitches_15to18.reindex(sorted(pitches_15to18), axis=1)
-    pitches_19 = pd.read_csv('./data/2019_pitches.csv')
+    pitches_19 = pd.read_csv('./raw_data/2019_pitches.csv')
     pitches_19 = pitches_19.reindex(sorted(pitches_19), axis=1)
     pitches = pd.concat((pitches_15to18, pitches_19)) # 3595944, 40
     if (atbat_ids != ''):
         pitches = pitches.loc[(pitches['ab_id'].isin(atbat_ids))]
+
+    # based on pitch_type, build a pitch_class field to distinguish fastballs from off-speed pitches    
+    pitches['pitch_class'] = pitches['pitch_type'].apply(lambda x: pitch_class(x))
+
+    #remove anything that's not a fastball or off-speed pitch (ie. Pitch out, Intentional Ball, etc.)
+    pitches = pitches[pitches['pitch_class'] != -1.0]
+
     return pitches
 
 # pass in no parameters to get all players.
 # pass in a firstname and lastname to get just the row corresponding to that player
 def load_players(first_name = '', last_name = ''):
-    players = pd.read_csv('./data/player_names.csv') # 2218, 3
+    players = pd.read_csv('./raw_data/player_names.csv') # 2218, 3
     if ((first_name != '') & (last_name != '')):
         players = players.loc[(players['first_name'] == first_name) & (players['last_name'] == last_name)]
     return players
