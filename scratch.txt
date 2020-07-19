@@ -1,0 +1,17 @@
+1) Use predictors to see if there's a linear pattern
+    - need a basic result -> 0 (fastball) or 1 (offspeed pitch)
+    - can get into more classification -> 0 (fast), 1 (offspeed), 2 (breaking)
+    - determine helpful predictors
+        - forward or backward selection
+
+2) Add more predictors that may be helpful
+    - previous pitch
+    - number of fastballs/offspeeds thrown in this at bat
+    - pitch distribution that day
+
+3) Situationally
+    - classifier by count
+
+4) Neural Network
+
+5) Logistical Regression
