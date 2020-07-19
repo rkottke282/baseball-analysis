@@ -2,9 +2,6 @@ import data as dataHelper
 import pandas as pd
 import numpy as np
 import os.path as path
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import mean_squared_error, accuracy_score
-from sklearn.model_selection import train_test_split
 
 
 if (path.exists('ss_data.csv')):
@@ -15,11 +12,20 @@ else:
     ss_data = dataHelper.reduce_columns(dataHelper.get_strasburg_data(False))
     ss_data.to_csv('ss_data.csv')
 
-np_ss_data = ss_data.to_numpy()
-predictors = np_ss_data[:,:-3]
-response = np_ss_data[:,-1].astype(int)
-X_train, X_test, y_train, y_test = train_test_split(predictors, response, test_size=.2, random_state=282)
+# Number of pitches
+total_pitch_count = len(ss_data)
+print('Total number of pitches thrown by Stephen Strasburg: {}'.format(total_pitch_count))
 
-lr_model = LogisticRegression().fit(X_train, y_train)
-y_test_predictions = lr_model.predict(X_test)
-print(accuracy_score(y_test, y_test_predictions))
+# Breakdown of pitch classes
+pitch_classes = set(ss_data['pitch_class'].values)
+pitch_class_summaries = []
+for pitch_class in pitch_classes:
+    num_class = len(ss_data[ss_data['pitch_class'] == pitch_class])
+    percent_class = round(100 * num_class / total_pitch_count,2)
+    pitch_class_summaries.append((pitch_class, \
+        num_class, \
+        '{}%'.format(percent_class)))
+
+# Fastballs: 6874 -> 54.43%, Off-speeds: 5755 -> 46.57%
+# print(pitch_class_summaries) 
+
