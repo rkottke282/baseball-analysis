@@ -16,12 +16,14 @@ else:
     ss_data.to_csv('ss_data.csv')
 
 np_ss_data = ss_data.to_numpy()
-predictors = np_ss_data[:,:-3]
+predictors = np_ss_data[:,:-1]
 response = np_ss_data[:,-1].astype(int)
 X_train, X_test, y_train, y_test = train_test_split(predictors, response, test_size=.2, random_state=282)
 
+# Let's do forward variable selection, adding variables one at a time and keeping variables which 
+#  contribute to a better model, using AUC as a measure of accuracy
 lr_model = LogisticRegression().fit(X_train, y_train)
 y_test_predictions = lr_model.predict(X_test)
-# print('Accuracy of logistic regression {}%'.format(round(100*accuracy_score(y_test, y_test_predictions),2)))
-# Accuracy of log reg: 56.89%
+
+
 

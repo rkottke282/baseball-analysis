@@ -16,12 +16,12 @@ else:
     ss_data.to_csv('ss_data.csv')
 
 np_ss_data = ss_data.to_numpy()
-predictors = np_ss_data[:,:-3]
+predictors = np_ss_data[:,:-1]
 response = np_ss_data[:,-1].astype(int)
 X_train, X_test, y_train, y_test = train_test_split(predictors, response, test_size=.2, random_state=282)
 
 lr_model = LogisticRegression().fit(X_train, y_train)
 y_test_predictions = lr_model.predict(X_test)
-# print('Accuracy of logistic regression {}%'.format(round(100*accuracy_score(y_test, y_test_predictions),2)))
-# Accuracy of log reg: 56.89%
+print('Accuracy of logistic regression {}%'.format(round(100*accuracy_score(y_test, y_test_predictions),2)))
+# Accuracy of log reg: 57.96%
 

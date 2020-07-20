@@ -9,7 +9,7 @@ if (path.exists('ss_data.csv')):
 else:
     # Boolean in 'get_strasburg_data' to determine if we should get all the data (false)
     #  or just a subset (true)
-    ss_data = dataHelper.reduce_columns(dataHelper.get_strasburg_data(False))
+    ss_data = dataHelper.reduce_columns(dataHelper.get_strasburg_data(True))
     ss_data.to_csv('ss_data.csv')
 
 # Number of pitches
@@ -27,5 +27,5 @@ for pitch_class in pitch_classes:
         '{}%'.format(percent_class)))
 
 # Fastballs: 6874 -> 54.43%, Off-speeds: 5755 -> 46.57%
-# print(pitch_class_summaries) 
+print(pitch_class_summaries) 
 
