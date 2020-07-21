@@ -6,6 +6,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import mean_squared_error, accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.feature_selection import RFECV
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 from matplotlib import pyplot as plt
 from collections import defaultdict
 
@@ -30,7 +32,7 @@ coefs = lr_model.coef_[0]
 # for name, value in zip(headers, coefs):
 #     print('{} has coefficient: {}'.format(name, value))
 plt.bar([x for x in headers[:-1]], coefs)
-# plt.show()
+plt.show()
 
 # Now let's see what parameters are suggested using auc as a deciding factor
 lr_model2 = LogisticRegression().fit(predictors, response)
@@ -44,7 +46,7 @@ for idx,x in enumerate(rfecv.ranking_):
     else:
         rank_by_headers.update({x: headers[idx] + ',' + existing})
 
-print('Parameters by descending order of importance:')
+print('Parameters by descending order of importance using auc as the scorer:')
 for x in sorted(rank_by_headers.items()):
     print(x)
 
@@ -60,13 +62,41 @@ for idx,x in enumerate(rfecv.ranking_):
     else:
         rank_by_headers.update({x: headers[idx] + ',' + existing})
 
-print('Parameters by descending order of importance:')
+print('Parameters by descending order of importance using accuracy as the scorer:')
 for x in sorted(rank_by_headers.items()):
     print(x)
 
-# Let's check the accuracy when only using the top 6 predictors
-reduced_predictors = ss_data[['pitch_num', 'b_count', 'on_1b','stand','outs','s_count']].to_numpy()
-X_train, X_test, y_train, y_test = train_test_split(reduced_predictors, response, test_size=.2, random_state=282)
-lr_model4 = LogisticRegression().fit(X_train, y_train)
-y_test_predictions = lr_model4.predict(X_test)
-print('Accuracy of logistic regression {}%'.format(round(100*accuracy_score(y_test, y_test_predictions),2)))
+#Using CART to determine feature importance
+dtc = DecisionTreeClassifier().fit(predictors,response)
+plt.bar([x for x in headers[:-1]], dtc.feature_importances_)
+plt.show()
+
+
+rank_by_headers = defaultdict(str)
+for idx,x in enumerate(dtc.feature_importances_):
+    existing = rank_by_headers.get(x)
+    if (existing == None):
+        rank_by_headers.update({x: headers[idx]})
+    else:
+        rank_by_headers.update({x: headers[idx] + ',' + existing})
+
+print('Parameters by descending order for decision tree:')
+for x in sorted(rank_by_headers.items()):
+    print(x)
+
+#Using Random Forest to determine feature importance
+rfc = RandomForestClassifier().fit(predictors,response)
+plt.bar([x for x in headers[:-1]], rfc.feature_importances_)
+plt.show()
+
+rank_by_headers = defaultdict(str)
+for idx,x in enumerate(dtc.feature_importances_):
+    existing = rank_by_headers.get(x)
+    if (existing == None):
+        rank_by_headers.update({x: headers[idx]})
+    else:
+        rank_by_headers.update({x: headers[idx] + ',' + existing})
+
+print('Parameters by descending order for random forest:')
+for x in sorted(rank_by_headers.items()):
+    print(x)
