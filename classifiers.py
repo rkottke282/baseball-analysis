@@ -25,3 +25,8 @@ y_test_predictions = lr_model.predict(X_test)
 print('Accuracy of logistic regression {}%'.format(round(100*accuracy_score(y_test, y_test_predictions),2)))
 # Accuracy of log reg: 57.96%
 
+#Per learning in variable-selection: variables by importance -> pitch_num, b_count, on_1b, stand, outs, s_count
+# secondary variables -> on_3b, inning, prev_pitch_class
+# tertiary variables -> top, b_score, on_2b, p_score
+
+#Random Forest
