@@ -3,6 +3,7 @@ import numpy as np
 helpful_columns = ['inning','outs','p_score','b_score','stand', \
                         'top', 'b_count', 's_count', 'pitch_num', \
                         'on_1b', 'on_2b', 'on_3b', \
+                        'f_count', 'o_count', \
                         'prev_pitch_class','pitch_class']
 fastballs = ['FA', 'FC', 'FF', 'FS', 'FT', 'SI']
 offspeeds = ['CH', 'CU', 'EP', 'KC', 'KN', 'SC', 'SL']
@@ -42,6 +43,31 @@ def append_previous_pitch_class(pitches):
     pitches['prev_pitch_class'] = pitches['prev_pitch_class'].replace(np.nan, -1.0)
     return pitches
 
+def populate_strike_ball_atbat_counts(pitches):
+    # add new columns for filling in
+    pitches['f_count'] = 0
+    pitches['o_count'] = 0
+    # reminder: 0 is a fastball, 1 is an offspeed
+    fastballs_in_count = 0 
+    offspeeds_in_count = 0
+    current_ab_id = -1
+    for idx, pitch in pitches.iterrows():
+        if (idx < 100):
+            # Reset the counts when the at bat changes
+            if (current_ab_id != pitch.ab_id):
+                current_ab_id = pitch.ab_id
+                fastballs_in_count = 0
+                offspeeds_in_count = 0
+
+            # keep count of pitch types in at bat
+            if (pitch.pitch_class == 0.0):
+                fastballs_in_count += 1
+            else:
+                offspeeds_in_count += 1
+            pitches.loc[idx,'f_count'] = fastballs_in_count 
+            pitches.loc[idx,'o_count'] = offspeeds_in_count
+    return pitches
+
 # pass in no parameters to get all pitches.
 # pass in a list of at bat ids to get just the rows corresponding to those at bats
 def load_pitches(atbat_ids = ''):
@@ -60,6 +86,7 @@ def load_pitches(atbat_ids = ''):
     pitches = pitches[pitches['pitch_class'] != -1.0]
 
     pitches = append_previous_pitch_class(pitches)
+    pitches = populate_strike_ball_atbat_counts(pitches)
 
     return pitches
 
@@ -99,6 +126,7 @@ def get_strasburg_data(subset=False):
 def reduce_columns(data, columns_to_keep=helpful_columns):
     return data[helpful_columns] 
 
-
-
+# #Testing
+# ss_data = reduce_columns(get_strasburg_data(False))
+# ss_data.to_csv('ss_data_test.csv')
 
