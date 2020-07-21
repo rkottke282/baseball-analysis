@@ -7,6 +7,7 @@ from sklearn.metrics import mean_squared_error, accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier as RFC
 from sklearn.neural_network import MLPClassifier
+from sklearn.naive_bayes import GaussianNB
 
 
 if (path.exists('ss_data.csv')):
@@ -72,3 +73,13 @@ for i in [3, 10, 25, 75, 100]:
     nn = MLPClassifier(hidden_layer_sizes=i).fit(X_train, y_train)
     nn_y_test_predictions = nn.predict(X_test)
     print('Accuracy of neural network with {} hidden layer(s): {}%'.format(i, round(100*accuracy_score(y_test, nn_y_test_predictions),2)))
+
+#Naive Bayes
+nbc = GaussianNB().fit(X_train, y_train)
+nbc_y_test_predictions = nbc.predict(X_test)
+print('Accuracy of Naive Bayes {}%'.format(round(100*accuracy_score(y_test, nbc_y_test_predictions),2)))
+
+#Naive Bayes with priors
+nbc = GaussianNB(priors=[.5443,.4557]).fit(X_train, y_train)
+nbc_y_test_predictions = nbc.predict(X_test)
+print('Accuracy of Naive Bayes with priors {}%'.format(round(100*accuracy_score(y_test, nbc_y_test_predictions),2)))
