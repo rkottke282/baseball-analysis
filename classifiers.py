@@ -8,6 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier as RFC
 from sklearn.neural_network import MLPClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.decomposition import PCA
 
 
 if (path.exists('ss_data.csv')):
@@ -62,6 +63,19 @@ lr_model = LogisticRegression().fit(X_train, y_train)
 y_test_predictions = lr_model.predict(X_test)
 print('Accuracy of logistic regression with 2 predictors {}%'.format(round(100*accuracy_score(y_test, y_test_predictions),2)))
 # Accuracy of log reg: 57.96%
+
+# Use PCA to reduce dimensionality
+np_ss_data = ss_data[['pitch_num', 'b_count', 'on_1b','stand','outs','s_count','on_3b', 'inning', 'prev_pitch_class','pitch_class']].to_numpy()
+red_predictors = np_ss_data[:,:-1]
+response = np_ss_data[:,-1].astype(int)
+pca = PCA(n_components=2).fit(red_predictors)
+# print(pca.explained_variance_, pca.explained_variance_ratio_)
+transformed_predictors = pca.transform(red_predictors)
+X_train, X_test, y_train, y_test = train_test_split(transformed_predictors, response, test_size=.2, random_state=282)
+lr_model = LogisticRegression().fit(X_train, y_train)
+y_test_predictions = lr_model.predict(X_test)
+print('Accuracy of logistic regression run with PCA {}%'.format(round(100*accuracy_score(y_test, y_test_predictions),2)))
+
 
 #Random Forest
 rfc = RFC(max_depth=6).fit(X_train, y_train)

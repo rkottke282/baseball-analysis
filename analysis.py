@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import os.path as path
 
-
 if (path.exists('ss_data.csv')):
     ss_data = pd.read_csv('ss_data.csv', index_col=0)
 else:
@@ -28,4 +27,3 @@ for pitch_class in pitch_classes:
 
 # Fastballs: 6874 -> 54.43%, Off-speeds: 5755 -> 46.57%
 print(pitch_class_summaries) 
-
