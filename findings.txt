@@ -5,72 +5,76 @@ Initial analysis of data:
 
 Variable-Selection:
 -	Log regression with all classifiers:
-		inning has coefficient: 0.0757657364971129
-		outs has coefficient: 0.1281267352166263
-		p_score has coefficient: -0.011669355322952159
-		b_score has coefficient: 0.016714640187013362
-		stand has coefficient: 0.17848672793935555
-		top has coefficient: -0.03613849239944037
-		b_count has coefficient: -0.5417482348363676
-		s_count has coefficient: -0.09178021145815865
-		pitch_num has coefficient: 0.3160604684932872
-		on_1b has coefficient: -0.23426108782805735
-		on_2b has coefficient: -0.0026573003619583084
-		on_3b has coefficient: 0.0167774083768499
-		prev_pitch_class has coefficient: 0.0292251709697919
-    - Optimal number of features determined to be given ROC_AUC: 9
+		inning has coefficient: -0.03530519723465833
+		outs has coefficient: -0.035871145507381984
+		p_score has coefficient: -0.009066933479411173
+		b_score has coefficient: 0.0011154367566474136
+		stand has coefficient: 0.007484419936591883
+		top has coefficient: 0.07859339682996212
+		b_count has coefficient: -0.47664792342832657
+		s_count has coefficient: 0.3016751409710461
+		pitch_num has coefficient: 0.31628235236673735
+		on_1b has coefficient: 0.020815544148580386
+		on_2b has coefficient: -0.20917135977431348
+		on_3b has coefficient: -0.11033289403482029	
+		f_count has coefficient: -1.1176296031290576
+		o_count has coefficient: 1.5977324167028257
+		prev_pitch_class has coefficient: -1.0736580199833683
+    - Optimal number of features determined to be given ROC_AUC: 8
     - Descending order of importance, using ROC_AUC to keep only those helping classify 
-	    (1, 'prev_pitch_class,on_3b,on_1b,pitch_num,s_count,b_count,stand,outs,inning')
+	   (1, 'prev_pitch_class,o_count,f_count,on_3b,on_2b,pitch_num,s_count,b_count')
 		(2, 'top')
-		(3, 'b_score')
-		(4, 'on_2b')
-		(5, 'p_score')
-	- Optimal number of features given accuracy: 2
-	- Parameters by descending order of importance:
-		(1, 'pitch_num,b_count')
-		(2, 'on_1b')
-		(3, 'stand')
+		(3, 'inning')
 		(4, 'outs')
-		(5, 's_count')
-		(6, 'on_3b')
-		(7, 'inning')
-		(8, 'prev_pitch_class')
-		(9, 'top')
-		(10, 'b_score')
-		(11, 'on_2b')
-		(12, 'p_score')
-	- So pitch_num and b_count are definately good predictors.  [on_1b, stand, outs, s_count] seem
-	    to be assist in AUC but not with accuracy.  [on_3b, inning, and prev_pitch_class] seem 
-	    potentially helpful but not greatly.  
-    - Reducing to 6 variables -> 57.18%
-    	- These 6 variables are all we really need
+		(5, 'on_1b')
+		(6, 'p_score')
+		(7, 'stand')
+		(8, 'b_score')
+	- Optimal number of features given accuracy: 5
+	- Parameters by descending order of importance:
+		(1, 'prev_pitch_class,o_count,f_count,pitch_num,b_count')
+		(2, 's_count')
+		(3, 'on_2b')
+		(4, 'on_3b')
+		(5, 'top')
+		(6, 'inning')
+		(7, 'outs')
+		(8, 'on_1b')
+		(9, 'p_score')
+		(10, 'stand')
+		(11, 'b_score')
+	- So prev_pitch_class, o_count, f_count, pitch_num and b_count are definately good predictors.  [s_count, on_2b, on_3b] seem
+	    to assist in AUC but not with accuracy.  The rest are not really helpful.
+
 - Random Forest with all classifiers:
-	(0.02404420348310253, 'on_3b')
-	(0.03566178935058493, 'stand')
-	(0.036326740583566636, 'on_2b')
-	(0.04002376586825636, 'b_count')
-	(0.048001131536127464, 's_count')
-	(0.048771542189621334, 'prev_pitch_class')
-	(0.056721094397840205, 'top')
-	(0.09658485609082613, 'pitch_num')
-	(0.10927671404345617, 'outs')
-	(0.13749952315123884, 'b_score')
-	(0.14510490738043852, 'inning')
-	(0.17345807154032153, 'p_score')
-	- Random forest recommends using all 13 predictors
+	(0.4065826081221317, 'o_count')
+	(0.19916161335686414, 'f_count')
+	(0.07106681201956233, 'prev_pitch_class')
+	(0.054691728853261005, 'inning')
+	(0.05217966010348602, 'p_score')
+	(0.03961283929679532, 'b_score')
+	(0.033475980225629774, 'outs')
+	(0.028193901075298733, 'b_count')
+	(0.024697519579281228, 's_count')
+	(0.020078082247127475, 'top')
+	(0.01984238748276576, 'pitch_num')
+	(0.019713554445576903, 'stand')
+	(0.013246758529774201, 'on_1b')
+	(0.011919001275663367, 'on_2b')
+	(0.0055375533867819664, 'on_3b')
+	- Random forest recommends using all predictors
 
 Classifiers (split 80 train, 20 test and ran prediction on test):
- - Logistic regression with all predictors -> 57.96% accurate
- 	- 9 predictors: 58.79%
- 	- 6 predictors: 57.18%
- 	- 2 predictors: 57.65%
-- Random Forest with all predictors -> 58.08% accurate
-- Neural Network with varying hidden layers:
-	- 3: 57.65%
-	- 10: 57.02%
-	- 25: 57.1%
-	- 100: 57.02%
-- Naive Bayes: 55.13%
-	- with priors: 56.78%
-
-
+ - Logistic regression with all predictors -> 82.54% accurate
+ 	- 9 predictors: 82.46%
+ 	- 5 predictors: 83.33%
+ 	- 6 predictors: 82.54%
+ 	- PCA and logreg: 55.25%
+- Random Forest with all predictors -> 70.94% accurate
+		- only best 5 predictors: 87.42%
+- Neural Network with varying hidden layers, using 5 best predictors:
+	- 3:  86.35%
+	- 25: 86.91%
+	- 50: 86.71%
+	- 100: 87.3%
+- Naive Bayes with 5 best predictors: 78.92%

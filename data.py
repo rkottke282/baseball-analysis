@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import os.path as path
 helpful_columns = ['inning','outs','p_score','b_score','stand', \
                         'top', 'b_count', 's_count', 'pitch_num', \
                         'on_1b', 'on_2b', 'on_3b', \
@@ -52,20 +53,19 @@ def populate_strike_ball_atbat_counts(pitches):
     offspeeds_in_count = 0
     current_ab_id = -1
     for idx, pitch in pitches.iterrows():
-        if (idx < 100):
-            # Reset the counts when the at bat changes
-            if (current_ab_id != pitch.ab_id):
-                current_ab_id = pitch.ab_id
-                fastballs_in_count = 0
-                offspeeds_in_count = 0
+        # Reset the counts when the at bat changes
+        if (current_ab_id != pitch.ab_id):
+            current_ab_id = pitch.ab_id
+            fastballs_in_count = 0
+            offspeeds_in_count = 0
 
-            # keep count of pitch types in at bat
-            if (pitch.pitch_class == 0.0):
-                fastballs_in_count += 1
-            else:
-                offspeeds_in_count += 1
-            pitches.loc[idx,'f_count'] = fastballs_in_count 
-            pitches.loc[idx,'o_count'] = offspeeds_in_count
+        # keep count of pitch types in at bat
+        if (pitch.pitch_class == 0.0):
+            fastballs_in_count += 1
+        elif(pitch.pitch_class == 1.0):
+            offspeeds_in_count += 1
+        pitches.loc[idx,'f_count'] = fastballs_in_count 
+        pitches.loc[idx,'o_count'] = offspeeds_in_count
     return pitches
 
 # pass in no parameters to get all pitches.
@@ -126,7 +126,15 @@ def get_strasburg_data(subset=False):
 def reduce_columns(data, columns_to_keep=helpful_columns):
     return data[helpful_columns] 
 
-# #Testing
+# get only the data that meets the count criteria
+def get_data_with_count(data, balls, strikes):
+    data = data.loc[(data['b_count'] == balls) & (data['s_count'] == strikes)]
+    return data
+
+#Testing
 # ss_data = reduce_columns(get_strasburg_data(False))
+# ss_data = pd.read_csv('ss_data_test.csv')
+# ss_data_reduced = get_data_with_count(ss_data, 0, 0)
+# print(ss_data_reduced)
 # ss_data.to_csv('ss_data_test.csv')
 

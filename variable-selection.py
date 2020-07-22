@@ -29,8 +29,8 @@ response = np_ss_data[:,-1].astype(int)
 # Let's take a look at the coefficients of the parameters
 lr_model = LogisticRegression().fit(predictors, response)
 coefs = lr_model.coef_[0]
-# for name, value in zip(headers, coefs):
-#     print('{} has coefficient: {}'.format(name, value))
+for name, value in zip(headers, coefs):
+    print('{} has coefficient: {}'.format(name, value))
 plt.bar([x for x in headers[:-1]], coefs)
 plt.show()
 
@@ -81,7 +81,7 @@ for idx,x in enumerate(dtc.feature_importances_):
         rank_by_headers.update({x: headers[idx] + ',' + existing})
 
 print('Parameters by descending order for decision tree:')
-for x in sorted(rank_by_headers.items()):
+for x in sorted(rank_by_headers.items())[::-1]:
     print(x)
 
 #Using Random Forest to determine feature importance
@@ -98,5 +98,5 @@ for idx,x in enumerate(dtc.feature_importances_):
         rank_by_headers.update({x: headers[idx] + ',' + existing})
 
 print('Parameters by descending order for random forest:')
-for x in sorted(rank_by_headers.items()):
+for x in sorted(rank_by_headers.items())[::-1]:
     print(x)
