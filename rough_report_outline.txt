@@ -1,0 +1,38 @@
+- intro
+    - Stephen Strasburg
+    - Astros
+    - 2019 world series
+
+- goal: analyze Strasburg's pitching, find patterns that would take away any edge 
+    Strasburg has and estimate the next pitch type
+    - hypothesis: types of classifier? 
+
+- data
+    - kaggle: https://www.kaggle.com/pschale/mlb-pitch-data-20152018/activity
+    - pitching data
+        - attributes 
+        - compounded (custom) attributes
+
+- Variable Selection
+    - log regression -> importance of variables
+    - CART -> importance of variables
+
+- Classifiers
+    - log regression
+        - all variables
+            - accuracy
+            - auc
+        - 8, 5, 6
+            - accuracy
+            - auc 
+    - random forest
+        - accuracy
+        - auc
+    - neural networks
+        - accuracy
+        - auc
+
+- Special cases
+    - (0,0) count v. All other counts
+
+- Continued analysis recomendations
