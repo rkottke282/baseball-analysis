@@ -127,14 +127,17 @@ def reduce_columns(data, columns_to_keep=helpful_columns):
     return data[helpful_columns] 
 
 # get only the data that meets the count criteria
-def get_data_with_count(data, balls, strikes):
-    data = data.loc[(data['b_count'] == balls) & (data['s_count'] == strikes)]
+def get_data_with_count(data, balls, strikes, reverse=False):
+    if (reverse): 
+        data = data.loc[(data['b_count'] != balls) | (data['s_count'] != strikes)]
+    else:
+        data = data.loc[(data['b_count'] == balls) & (data['s_count'] == strikes)]
     return data
 
 #Testing
 # ss_data = reduce_columns(get_strasburg_data(False))
-# ss_data = pd.read_csv('ss_data_test.csv')
-# ss_data_reduced = get_data_with_count(ss_data, 0, 0)
+ss_data = pd.read_csv('ss_data_test.csv')
+ss_data_reduced = get_data_with_count(ss_data, 0, 0, True)
 # print(ss_data_reduced)
-# ss_data.to_csv('ss_data_test.csv')
+ss_data_reduced.to_csv('ss_data_test.csv')
 
