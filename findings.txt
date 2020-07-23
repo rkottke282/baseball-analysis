@@ -5,21 +5,6 @@ Initial analysis of data:
 
 Variable-Selection:
 -	Log regression with all classifiers:
-		inning has coefficient: -0.03530519723465833
-		outs has coefficient: -0.035871145507381984
-		p_score has coefficient: -0.009066933479411173
-		b_score has coefficient: 0.0011154367566474136
-		stand has coefficient: 0.007484419936591883
-		top has coefficient: 0.07859339682996212
-		b_count has coefficient: -0.47664792342832657
-		s_count has coefficient: 0.3016751409710461
-		pitch_num has coefficient: 0.31628235236673735
-		on_1b has coefficient: 0.020815544148580386
-		on_2b has coefficient: -0.20917135977431348
-		on_3b has coefficient: -0.11033289403482029	
-		f_count has coefficient: -1.1176296031290576
-		o_count has coefficient: 1.5977324167028257
-		prev_pitch_class has coefficient: -1.0736580199833683
     - Optimal number of features determined to be given ROC_AUC: 8
     - Descending order of importance, using ROC_AUC to keep only those helping classify 
 	   (1, 'prev_pitch_class,o_count,f_count,on_3b,on_2b,pitch_num,s_count,b_count')
@@ -66,7 +51,7 @@ Variable-Selection:
 
 Classifiers (split 80 train, 20 test and ran prediction on test):
  - Logistic regression with all predictors -> 82.54% accurate
- 	- 9 predictors: 82.46%
+ 	- 8 predictors: 82.46%
  	- 5 predictors: 83.33%
  	- 6 predictors: 82.54%
  	- PCA and logreg: 55.25%

@@ -21,18 +21,19 @@
     - log regression
         - all variables
             - accuracy
-            - auc
         - 8, 5, 6
             - accuracy
-            - auc 
     - random forest
         - accuracy
-        - auc
     - neural networks
         - accuracy
-        - auc
+
+    - ROC AUC of log regression, random forest and neural network
 
 - Special cases
     - (0,0) count v. All other counts
+
+- Final Results
+    - recomend to use ??
 
 - Continued analysis recomendations
