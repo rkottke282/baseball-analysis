@@ -15,7 +15,10 @@
 
 - Variable Selection
     - log regression -> importance of variables
+        - suggested variables when using AUC as target
+        - suggested variables when using accuracy as target
     - CART -> importance of variables
+    - random forest -> imporatance of variables
 
 - Classifiers
     - log regression
@@ -28,7 +31,7 @@
     - neural networks
         - accuracy
 
-    - ROC AUC of log regression, random forest and neural network
+    - ROC AUC of log regression (5 and 8), random forest and neural network plotted and printed
 
 - Special cases
     - (0,0) count v. All other counts
