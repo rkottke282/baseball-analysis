@@ -8,7 +8,7 @@ if (path.exists('ss_data.csv')):
 else:
     # Boolean in 'get_strasburg_data' to determine if we should get all the data (false)
     #  or just a subset (true)
-    ss_data = dataHelper.reduce_columns(dataHelper.get_strasburg_data(True))
+    ss_data = dataHelper.reduce_columns(dataHelper.get_strasburg_data(False))
     ss_data.to_csv('ss_data.csv')
 
 # Number of pitches

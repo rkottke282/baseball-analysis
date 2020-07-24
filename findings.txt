@@ -63,3 +63,7 @@ Classifiers (split 80 train, 20 test and ran prediction on test):
 	- 50: 86.71%
 	- 100: 87.3%
 - Naive Bayes with 5 best predictors: 78.92%
+
+AUC of linear regression classifier with 5 features: 0.8824017591765938
+AUC of random forest classifier: 0.9562914096946469
+AUC of neural network: 0.9569345401523839
