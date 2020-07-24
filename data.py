@@ -136,8 +136,8 @@ def get_data_with_count(data, balls, strikes, reverse=False):
 
 #Testing
 # ss_data = reduce_columns(get_strasburg_data(False))
-ss_data = pd.read_csv('ss_data_test.csv')
-ss_data_reduced = get_data_with_count(ss_data, 0, 0, True)
+# ss_data = pd.read_csv('ss_data_test.csv')
+# ss_data_reduced = get_data_with_count(ss_data, 0, 0, True)
 # print(ss_data_reduced)
-ss_data_reduced.to_csv('ss_data_test.csv')
+# ss_data_reduced.to_csv('ss_data_test.csv')
 
