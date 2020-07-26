@@ -19,6 +19,16 @@ else:
     ss_data = dataHelper.reduce_columns(dataHelper.get_strasburg_data(False))
     ss_data.to_csv('ss_data.csv')
 
+# Log Regression with top 8 predictors
+np_ss_data = ss_data[['prev_pitch_class','o_count','f_count','pitch_num','b_count','s_count','on_2b','on_3b','pitch_class']].to_numpy()
+red_predictors = np_ss_data[:,:-1]
+response = np_ss_data[:,-1].astype(int)
+X_train, X_test, y_train, y_test = train_test_split(red_predictors, response, test_size=.2, random_state=282)
+lr_model_8 = LogisticRegression().fit(X_train, y_train)
+lr_test_prob_8 = lr_model_8.predict_proba(X_test)[:,1]
+lr_auc_8 = roc_auc_score(y_test, lr_test_prob_8)
+print('AUC of linear regression classifier with 8 features: {}'.format(lr_auc_8))
+
 # Log Regression with top 5 predictors
 np_ss_data = ss_data[['prev_pitch_class','o_count','f_count','pitch_num','b_count','pitch_class']].to_numpy()
 red_predictors = np_ss_data[:,:-1]
@@ -43,9 +53,11 @@ print('AUC of neural network: {}'.format(nn_auc))
 
 #Plotting ROC AUC
 lr_fpr, lr_tpr, _ = roc_curve(y_test, lr_test_prob)
+lr_fpr_8, lr_tpr_8, _ = roc_curve(y_test, lr_test_prob_8)
 rf_fpr, rf_tpr, _ = roc_curve(y_test, rfc_test_prob)
 nn_fpr, nn_tpr, _ = roc_curve(y_test, nn_test_prob)
-plt.plot(lr_fpr, lr_tpr, color='Red', label='Logistic Regression')
+plt.plot(lr_fpr, lr_tpr, color='Red', label='Logistic Regression w/ 5 Predictors')
+plt.plot(lr_fpr_8, lr_tpr_8, color='Orange', label='Logistic Regression w/ 8 Predictors')
 plt.plot(rf_fpr, rf_tpr, color='Blue', label='Random Forest')
 plt.plot(nn_fpr, nn_tpr, color='Black', label='Neural Network')
 plt.xlabel('False Positive')

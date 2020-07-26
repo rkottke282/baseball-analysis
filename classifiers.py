@@ -77,9 +77,11 @@ response = np_ss_data[:,-1].astype(int)
 X_train, X_test, y_train, y_test = train_test_split(red_predictors, response, test_size=.2, random_state=282)
 
 #Random Forest
-rfc = RFC(max_depth=6).fit(X_train, y_train)
-rfc_y_test_predictions = rfc.predict(X_test)
-print('Accuracy of random forest regression {}%'.format(round(100*accuracy_score(y_test, rfc_y_test_predictions),2)))
+for i in [100]:
+    for j in [5, 6, 7, 8, 9, 10]:
+        rfc = RFC(max_depth=j, n_estimators=i).fit(X_train, y_train)
+        rfc_y_test_predictions = rfc.predict(X_test)
+        print('Accuracy of random forest regression ({} estimators, {} depth) {}%'.format(i,j,round(100*accuracy_score(y_test, rfc_y_test_predictions),2)))
 
 #Neural Network
 for i in [3, 25, 50, 100]:

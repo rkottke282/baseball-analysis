@@ -79,6 +79,7 @@ def load_pitches(atbat_ids = ''):
     if (atbat_ids != ''):
         pitches = pitches.loc[(pitches['ab_id'].isin(atbat_ids))]
 
+    print(set(pitches['pitch_type']))
     # based on pitch_type, build a pitch_class field to distinguish fastballs from off-speed pitches    
     pitches['pitch_class'] = pitches['pitch_type'].apply(lambda x: pitch_class(x))
 
@@ -135,9 +136,6 @@ def get_data_with_count(data, balls, strikes, reverse=False):
     return data
 
 #Testing
-# ss_data = reduce_columns(get_strasburg_data(False))
-# ss_data = pd.read_csv('ss_data_test.csv')
-# ss_data_reduced = get_data_with_count(ss_data, 0, 0, True)
-# print(ss_data_reduced)
-# ss_data_reduced.to_csv('ss_data_test.csv')
-
+# ss_data = pd.read_csv('ss_data.csv')
+# Pitch types
+# print(set(ss_data.pitch_type))

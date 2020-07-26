@@ -13,23 +13,24 @@
 - after this subset of data has been created on a locally run, 
     the data load step will not occur, so subsequent runs should be more efficient
 - the data file will have the following attributes (specifically for one player):
-        inning: inning of the game
-        outs: number of outs at pitch
-        p_score: pitchers score at pitch
-        b_score: batters score at pitch
-        stand: batters stance converted to int (L=1.0 or R=0.0)
-        top: boolean translated to int, top of the inning or not (True=1.0 or False=0.0)
-        b_count: count of balls at pitch
-        s_count: count of strikes at pitch
-        pitch_num: number of pitches at pitch
-        on_1b: number of players on first base (0 or 1)
-        on_2b: number of players on second base (0 or 1)
-        on_3b: number of players on third base (0 or 1)
-        type: result of pitch (see appendix)
-        pitch_type: type of pitch (see appendix)
-        pitch_class: fastball=0.0, off-speed=1.0 (see appendix)
-        ab_id: at bat id;  used to differentiate one at bat from another
-        pitch_num: pitch number in the current at bat
+
+inning: inning of the game
+outs: number of outs at pitch
+p_score: pitchers score at pitch
+b_score: batters score at pitch
+stand: batters stance converted to int (L=1.0 or R=0.0)
+top: boolean translated to int, top of the inning or not (True=1.0 or False=0.0)
+b_count: count of balls at pitch
+s_count: count of strikes at pitch
+pitch_num: number of pitches at pitch
+on_1b: number of players on first base (0 or 1)
+on_2b: number of players on second base (0 or 1)
+on_3b: number of players on third base (0 or 1)
+type: result of pitch (see appendix)
+pitch_type: type of pitch (see appendix)
+pitch_class: fastball=0.0, off-speed=1.0 (see appendix)
+ab_id: at bat id;  used to differentiate one at bat from another
+pitch_num: pitch number in the current at bat
 
 ### Appendix
 
